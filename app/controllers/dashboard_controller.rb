@@ -21,11 +21,11 @@ class DashboardController < ApplicationController
 
   BLOG_FEED_URL = 'https://wikiedu.org/feed'
   def set_blog_posts
-    @blog_posts = Rails.cache.fetch('posts', expires_in: 1.day) do
-      RSS::Parser.parse(BLOG_FEED_URL, false).items
-    end
+    # @blog_posts = Rails.cache.fetch('posts', expires_in: 1.day) do
+    #   RSS::Parser.parse(BLOG_FEED_URL, false).items
+    # end
   # Rescue 404 errors, in case wikiedu.org is down.
-  rescue OpenURI::HTTPError, SocketError
+  # rescue OpenURI::HTTPError, SocketError
     @blog_posts = []
   end
 
