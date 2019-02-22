@@ -13,6 +13,7 @@ describe 'article finder', type: :feature, js: true do
 
   it 'performs searches and returns results' do
     visit "/courses/#{course.slug}/article_finder"
+    sleep 1
     within '.article-finder-form' do
       fill_in 'category', with: 'Selfie'
       click_button 'Submit'

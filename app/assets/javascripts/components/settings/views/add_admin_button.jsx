@@ -8,7 +8,7 @@ import PopoverExpandable from '../../high_order/popover_expandable.jsx';
 const AddAdminButton = createReactClass({
   propTypes: {
     source: PropTypes.string,
-    opne: PropTypes.func,
+    open: PropTypes.func,
     is_open: PropTypes.bool
   },
 

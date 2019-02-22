@@ -22,6 +22,7 @@ describe 'Training', type: :feature, js: true do
 
     it 'loads for a logged-in user' do
       visit '/training'
+      find('.container.training')
       library_names.each do |library_name|
         expect(page).to have_content library_name.humanize.titleize
       end
@@ -30,6 +31,7 @@ describe 'Training', type: :feature, js: true do
     it 'loads for a logged-out user' do
       logout(:user)
       visit '/training'
+      find('.container.training')
       library_names.each do |library_name|
         expect(page).to have_content library_name.humanize.titleize
       end

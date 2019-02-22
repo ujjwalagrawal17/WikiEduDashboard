@@ -276,6 +276,7 @@ describe 'the course page', type: :feature, js: true do
       js_visit "/courses/#{slug}/articles"
       expect(page).to have_content 'Available Articles'
       click_button 'Add available articles'
+      sleep 1
       page.first(:css, '#available-articles .pop.open').first('textarea').set('Education')
       click_button 'Add articles'
       sleep 1

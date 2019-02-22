@@ -30,7 +30,8 @@ const SORT_DESCENDING = {
 export default function uploads(state = initialState, action) {
   switch (action.type) {
     case RECEIVE_UPLOADS: {
-      const dataUploads = action.data.course.uploads;
+      const course = action.data.course;
+      const dataUploads = course ? course.uploads : [];
       // Intial sorting by upload date
       const sortedModel = sortByKey(dataUploads, 'uploaded_at', state.sortKey, SORT_DESCENDING.uploaded_at);
 
@@ -52,6 +53,7 @@ export default function uploads(state = initialState, action) {
     case SET_UPLOAD_METADATA: {
       let fetchedData;
       _.forEach(action.data, (data) => {
+        if (!data) return;
         if (data.query) {
           fetchedData = { ...fetchedData, ...data.query.pages };
         }

@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { sortByKey } from '../utils/model_utils';
 import { RECEIVE_ASSIGNMENTS, ADD_ASSIGNMENT, DELETE_ASSIGNMENT, UPDATE_ASSIGNMENT } from '../constants';
 
@@ -13,7 +12,8 @@ const SORT_DESCENDING = {};
 export default function assignments(state = initialState, action) {
   switch (action.type) {
     case RECEIVE_ASSIGNMENTS: {
-      const dataAssignments = action.data.course.assignments;
+      const course = action.data.course;
+      const dataAssignments = course ? course.assignments : [];
       // Initial sorting by article title
       const sortedModel = sortByKey(dataAssignments, 'article_title', state.sortKey, SORT_DESCENDING.article_title);
       return {
@@ -28,12 +28,12 @@ export default function assignments(state = initialState, action) {
       return { ...state, assignments: updatedAssignments };
     }
     case DELETE_ASSIGNMENT: {
-      const updatedAssignments = _.reject(state.assignments, { id: action.data.assignmentId });
+      const updatedAssignments = state.assignments.filter(({ id }) => id !== action.data.assignmentId);
       return { ...state, assignments: updatedAssignments };
     }
     case UPDATE_ASSIGNMENT: {
       const updatedAssignment = action.data.assignment;
-      const nonupdatedAssignments = _.reject(state.assignments, { id: updatedAssignment.id });
+      const nonupdatedAssignments = state.assignments.filter(({ id }) => id !== action.data.assignmentId);
       return { ...state, assignments: [...nonupdatedAssignments, updatedAssignment] };
     }
     default:

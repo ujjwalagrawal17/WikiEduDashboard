@@ -39,6 +39,7 @@ const AddSpecialUserForm = createReactClass({
   },
 
   handleConfirm(e) {
+    e.preventDefault();
     this.props.upgradeSpecialUser(this.state.username, this.state.position);
     this.props.handlePopoverClose(e);
   },
@@ -95,6 +96,7 @@ const AddSpecialUserForm = createReactClass({
           <button
             className="button border"
             value="confirm"
+            type="submit"
           >
             {I18n.t('settings.special_users.new.confirm_add_special_user')}
           </button>
