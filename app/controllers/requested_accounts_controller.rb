@@ -3,9 +3,9 @@
 #= Controller for requesting new wiki accounts and processing those requests
 class RequestedAccountsController < ApplicationController
   respond_to :html
-  before_action :set_course
+  before_action :set_course, except: [:index]
   before_action :check_creation_permissions,
-                only: %i[index create_accounts enable_account_requests destroy]
+                only: %i[show create_accounts enable_account_requests destroy]
 
   # This creates (or updates) a RequestedAccount, which is a username and email
   # for a user who wants to create a wiki account (but may not be able to do so
@@ -42,8 +42,19 @@ class RequestedAccountsController < ApplicationController
     @course.save
   end
 
+  # List of requested accounts for a user's courses.
+  def index
+    if user_signed_in?
+      @courses = current_user.courses.select do |course|
+        course.requested_accounts.present? && current_user.can_edit?(course)
+      end
+
+      redirect_to root_path if @courses.empty?
+    end
+  end
+
   # List of requested accounts for a course.
-  def index; end
+  def show; end
 
   def destroy
     # raise exception unless requestedaccount belongs to course
