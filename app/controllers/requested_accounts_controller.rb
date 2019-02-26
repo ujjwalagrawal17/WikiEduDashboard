@@ -44,13 +44,10 @@ class RequestedAccountsController < ApplicationController
 
   # List of requested accounts for a user's courses.
   def index
-    if user_signed_in?
-      @courses = current_user.courses.select do |course|
-        course.requested_accounts.present? && current_user.can_edit?(course)
-      end
+    redirect_to root_path unless user_signed_in? && current_user.admin?
 
-      redirect_to root_path if @courses.empty?
-    end
+    has_requested_accounts = ->(course) { course.requested_accounts.present? }
+    @courses = Course.current_and_future.select(&has_requested_accounts)
   end
 
   # List of requested accounts for a course.
